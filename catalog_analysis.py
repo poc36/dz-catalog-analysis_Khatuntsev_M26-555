@@ -47,14 +47,14 @@ def duration_in_hours(minutes):
     mins = minutes % 60
     return f"{hours}ч {mins}м"
 
-print("Средний рейтинг фильма:", average_rating(movies))
-print(
-    "Возраст фильма в годах (самый старый, самый новый, средний):", 
-    catalog_age_stats(movies)
-)
-print("Продолжительность фильма:")
-for movie in movies:
-    print(f"{movie['title']}: {duration_in_hours(movie['duration_min'])}")
+# print("Средний рейтинг фильма:", average_rating(movies))
+# print(
+#     "Возраст фильма в годах (самый старый, самый новый, средний):", 
+#     catalog_age_stats(movies)
+# )
+# print("Продолжительность фильма:")
+# for movie in movies:
+#    print(f"{movie['title']}: {duration_in_hours(movie['duration_min'])}")
 
 # Этап 2. Условия и match
 # Рейтинг фильма по категориям
@@ -67,11 +67,11 @@ def rating_tier(rating):
     else:
         return "слабо"
 
-print("Рейтинг фильма:")
-for movie in movies:
-    print(
-        f"{movie['title']}: {movie['rating']} — {rating_tier(movie['rating'])}"
-    )
+# print("Рейтинг фильма:")
+# for movie in movies:
+#    print(
+#        f"{movie['title']}: {movie['rating']} — {rating_tier(movie['rating'])}"
+#    )
 
 # Метка фильма по году выпуска
 
@@ -84,9 +84,9 @@ def decade_label(year):
         case _:
             return "старые"
 
-print("Метка фильма по году выпуска:")
-for movie in movies:
-    print(f"{movie['title']} ({movie['year']}): {decade_label(movie['year'])}")
+# print("Метка фильма по году выпуска:")
+# for movie in movies:
+#    print(f"{movie['title']} ({movie['year']}): {decade_label(movie['year'])}")
 
 # Этап 3. Циклы
 # Названия всех фильмов, кроме комедий
@@ -123,8 +123,8 @@ def count_long_movies(movies, threshold=120):
     return count
 
 
-threshold = 120
-print(f"Фильмов длиннее {threshold} минут:", count_long_movies(movies, threshold))
+# threshold = 120
+# print(f"Фильмов длиннее {threshold} минут:", count_long_movies(movies, threshold))
 
 # Этап 4. Строки
 # Приведение строки к Title Case (каждое слово с заглавной буквы)
@@ -154,9 +154,9 @@ def format_report_line(movie):
     return f'"{title}" ({year}) — {rating}/10, {duration}, жанры: {genres}'
 
 
-print(normalize_title("silent hours"))
-print(make_slug("Silent Hours"))
-print(format_report_line(movies[7]))
+# print(normalize_title("silent hours"))
+# print(make_slug("Silent Hours"))
+# print(format_report_line(movies[7]))
 
 # Этап 5. Списки
 
@@ -180,8 +180,8 @@ def top_n_by_rating(movies, n=3):
     return top
 
 
-print(titles_sorted_by_rating(movies))
-print(top_n_by_rating(movies, 3))
+# print(titles_sorted_by_rating(movies))
+# print(top_n_by_rating(movies, 3))
 
 
 # Этап 6. Словари
@@ -215,9 +215,9 @@ above_average = {
     for movie in movies if movie["rating"] > avg
 }
 
-print(count_by_genre(movies))
-print(actor_filmography(movies))
-print(above_average)
+# print(count_by_genre(movies))
+# print(actor_filmography(movies))
+# print(above_average)
 
 # Этап 7. Множества
 # Все уникальные жанры
@@ -241,9 +241,9 @@ def genres_only_in_one(movies_a, movies_b):
     return all_genres(movies_a) - all_genres(movies_b)
 
 
-print(all_genres(movies))
-print(common_actors(movies[0], movies[3]))
-print(genres_only_in_one(movies[5:6], movies[:5]))
+# print(all_genres(movies))
+# print(common_actors(movies[0], movies[3]))
+# print(genres_only_in_one(movies[5:6], movies[:5]))
 
 # Этап 8. Итераторы и генераторы
 # Фильмы с рейтингом не ниже min_rating
@@ -254,11 +254,36 @@ def iter_high_rated(movies, min_rating=8.0):
             yield movie
 
 
-print("Фильмы с рейтингом от 8.0:")
+# print("Фильмы с рейтингом от 8.0:")
 for movie in iter_high_rated(movies):
     print(format_report_line(movie))
 
 # Суммарная длительность всех фильмов с рейтингом выше 7
 
 total_duration = sum(m["duration_min"] for m in movies if m["rating"] > 7)
-print("Длительность фильмов с рейтингом выше 7:", total_duration, "мин")
+# print("Длительность фильмов с рейтингом выше 7:", total_duration, "мин")
+
+
+# Этап 9. Итоговый отчёт
+
+def build_report(movies):
+    genres = sorted(all_genres(movies))   # уникальные жанры по алфавиту
+    counts = count_by_genre(movies)       # {жанр: количество}
+
+    print("ОТЧЕТ ПО КАТАЛОГУ")
+    print(f"Средний рейтинг: {average_rating(movies)}")
+    print(f"Средний возраст фильмов: {catalog_age_stats(movies)[2]} лет")
+
+    print("\nТоп-3 фильма:")
+    for movie in sorted(movies, key=lambda m: m["rating"], reverse=True)[:3]:
+        print(f"  {format_report_line(movie)}")
+
+    print("\nФильмов по жанрам:")
+    for genre in sorted(genres, key=counts.get, reverse=True):
+        print(f"  {genre} — {counts[genre]}")
+
+    print(f"\nВсе жанры каталога: {', '.join(genres)}")
+
+
+print()
+build_report(movies)
