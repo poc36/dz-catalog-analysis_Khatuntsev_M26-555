@@ -244,3 +244,21 @@ def genres_only_in_one(movies_a, movies_b):
 print(all_genres(movies))
 print(common_actors(movies[0], movies[3]))
 print(genres_only_in_one(movies[5:6], movies[:5]))
+
+# Этап 8. Итераторы и генераторы
+# Фильмы с рейтингом не ниже min_rating
+
+def iter_high_rated(movies, min_rating=8.0):
+    for movie in movies:
+        if movie["rating"] >= min_rating:
+            yield movie
+
+
+print("Фильмы с рейтингом от 8.0:")
+for movie in iter_high_rated(movies):
+    print(format_report_line(movie))
+
+# Суммарная длительность всех фильмов с рейтингом выше 7
+
+total_duration = sum(m["duration_min"] for m in movies if m["rating"] > 7)
+print("Длительность фильмов с рейтингом выше 7:", total_duration, "мин")
