@@ -218,3 +218,29 @@ above_average = {
 print(count_by_genre(movies))
 print(actor_filmography(movies))
 print(above_average)
+
+# Этап 7. Множества
+# Все уникальные жанры
+
+def all_genres(movies):
+    genres = set()
+    for movie in movies:
+        genres = genres | movie["genres"]
+    return genres
+
+
+# Актёры, снимавшиеся в обоих фильмах
+
+def common_actors(movie1, movie2):
+    return set(movie1["actors"]) & set(movie2["actors"])
+
+
+# Жанры, которые есть в movies_a, но нет в movies_b
+
+def genres_only_in_one(movies_a, movies_b):
+    return all_genres(movies_a) - all_genres(movies_b)
+
+
+print(all_genres(movies))
+print(common_actors(movies[0], movies[3]))
+print(genres_only_in_one(movies[5:6], movies[:5]))
