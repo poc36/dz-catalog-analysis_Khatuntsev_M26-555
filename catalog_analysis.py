@@ -182,3 +182,39 @@ def top_n_by_rating(movies, n=3):
 
 print(titles_sorted_by_rating(movies))
 print(top_n_by_rating(movies, 3))
+
+
+# Этап 6. Словари
+# Количество фильмов по каждому жанру
+
+def count_by_genre(movies):
+    counts = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            counts[genre] = counts.get(genre, 0) + 1
+    return counts
+
+
+# Фильмография актёров
+
+def actor_filmography(movies):
+    filmography = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            films = filmography.get(actor, [])
+            films.append(movie["title"])
+            filmography[actor] = films
+    return filmography
+
+
+# Фильмы с рейтингом выше среднего
+
+avg = average_rating(movies)
+above_average = {
+    movie["title"]: movie["rating"] 
+    for movie in movies if movie["rating"] > avg
+}
+
+print(count_by_genre(movies))
+print(actor_filmography(movies))
+print(above_average)
