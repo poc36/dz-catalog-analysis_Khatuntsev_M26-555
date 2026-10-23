@@ -57,3 +57,33 @@ for movie in movies:
     print(f"{movie['title']}: {duration_in_hours(movie['duration_min'])}")
 
 # Этап 2. Условия и match
+# Рейтинг фильма по категориям
+
+def rating_tier(rating):
+    if rating >= 7:
+        return "шедевр" if rating >= 9 else "хорошо"
+    elif rating >= 5:
+        return "средне"
+    else:
+        return "слабо"
+
+print("Рейтинг фильма:")
+for movie in movies:
+    print(
+        f"{movie['title']}: {movie['rating']} — {rating_tier(movie['rating'])}"
+    )
+
+# Фильм по году выпуска
+
+def decade_label(year):
+    match year:
+        case _ if year > 2020:
+            return "новые"
+        case _ if year >= 2015:
+            return "недавние"
+        case _:
+            return "старые"
+
+print("Фильм по году выпуска:")
+for movie in movies:
+    print(f"{movie['title']} ({movie['year']}): {decade_label(movie['year'])}")
