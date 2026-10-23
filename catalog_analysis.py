@@ -115,7 +115,6 @@ find_first_top(movies[:7])
 
 # Количество фильмов длиннее threshold минут
 
-threshold = 12
 def count_long_movies(movies, threshold=120):
     count = 0
     for movie in movies:
@@ -124,4 +123,37 @@ def count_long_movies(movies, threshold=120):
     return count
 
 
+threshold = 120
 print(f"Фильмов длиннее {threshold} минут:", count_long_movies(movies, threshold))
+
+# Этап 4. Строки
+# Приведение строки к Title Case (каждое слово с заглавной буквы)
+
+def normalize_title(title):
+    words = title.split()
+    new_words = []
+    for word in words:
+        new_words.append(word[0].upper() + word[1:])
+    return " ".join(new_words)
+
+
+# Название через дефис, все буквы маленькие
+
+def make_slug(title):
+    return title.lower().replace(" ", "-")
+
+
+# Единая строка с описанием фильма
+
+def format_report_line(movie):
+    title = normalize_title(movie["title"])
+    year = movie["year"]
+    rating = movie["rating"]
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+    return f'"{title}" ({year}) — {rating}/10, {duration}, жанры: {genres}'
+
+
+print(normalize_title("silent hours"))
+print(make_slug("Silent Hours"))
+print(format_report_line(movies[7]))
