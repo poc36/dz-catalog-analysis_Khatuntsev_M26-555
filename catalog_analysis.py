@@ -73,7 +73,7 @@ for movie in movies:
         f"{movie['title']}: {movie['rating']} — {rating_tier(movie['rating'])}"
     )
 
-# Фильм по году выпуска
+# Метка фильма по году выпуска
 
 def decade_label(year):
     match year:
@@ -84,6 +84,44 @@ def decade_label(year):
         case _:
             return "старые"
 
-print("Фильм по году выпуска:")
+print("Метка фильма по году выпуска:")
 for movie in movies:
     print(f"{movie['title']} ({movie['year']}): {decade_label(movie['year'])}")
+
+# Этап 3. Циклы
+# Названия всех фильмов, кроме комедий
+
+print("Названия всех фильмов, кроме комедий:")
+for movie in movies:
+    if "comedy" in movie["genres"]:
+        continue
+    print(movie["title"])
+
+# Первый по порядку в списке фильм с рейтингом выше 9.0
+
+def find_first_top(movie):
+    i = 0
+    while i < len(movie):
+        if movie[i]["rating"] > 9.0:
+            print("Первый шедевр:", movie[i]["title"])
+            break
+        i += 1
+    else:
+        print("Шедевров не найдено")
+
+
+find_first_top(movies)
+find_first_top(movies[:7])
+
+# Количество фильмов длиннее threshold минут
+
+threshold = 12
+def count_long_movies(movies, threshold=120):
+    count = 0
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            count += 1
+    return count
+
+
+print(f"Фильмов длиннее {threshold} минут:", count_long_movies(movies, threshold))
